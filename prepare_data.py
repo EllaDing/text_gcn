@@ -2,10 +2,18 @@
 #-*-coding:utf-8-*-
 
 dataset_name = 'own'
-sentences = ['Would you like a plain sweater or something else?​', 'Great. We have some very nice wool slacks over here. Would you like to take a look?']
-labels = ['Yes' , 'No' ]
-train_or_test_list = ['train', 'test']
+# sentences = ['Would you like a plain sweater or something else?​', 'Great. We have some very nice wool slacks over here. Would you like to take a look?']
+# labels = ['Yes' , 'No' ]
+# train_or_test_list = ['train', 'test']
 
+import csv
+
+with open('../kaggle/train.csv', 'r') as f:
+  reader = csv.reader(f)
+  dataset = list(reader)
+  sentences = [row[1] for row in dataset]
+  labels = [row[2] for row in dataset]
+  train_or_test_list = ['train'] * int((0.8*len(sentences)))+['test'] * (len(sentences)-int(0.8*len(sentences)))
 
 meta_data_list = []
 

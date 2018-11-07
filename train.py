@@ -18,7 +18,7 @@ tf.set_random_seed(seed)
 # Settings
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
-dataset = '20ng'
+dataset = 'own'
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
