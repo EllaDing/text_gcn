@@ -56,7 +56,7 @@ f = open('data/corpus/' + dataset + '.clean.txt', 'w')
 f.write(clean_corpus_str)
 f.close()
 
-dataset = '20ng'
+dataset = 'own'
 min_len = 10000
 aver_len = 0
 max_len = 0 

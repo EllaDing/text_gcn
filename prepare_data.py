@@ -20,7 +20,7 @@ with open('../kaggle/test.csv', 'r') as f:
 	dataset = list(reader)
 	sentences1 = [row[1] for row in dataset[1:]]
 	sentences.extend(sentences1)
-	labels.extend(['0' for _ in dataset])
+	labels.extend(['0' for _ in dataset[1:]])
 	train_or_test_list.extend(['test'] * len(sentences1))
 
 meta_data_list = []
@@ -30,13 +30,13 @@ for i in range(len(sentences)):
     meta_data_list.append(meta)
 
 meta_data_str = '\n'.join(meta_data_list)
-
+print(len(meta_data_list))
 f = open('data/' + dataset_name + '.txt', 'w')
 f.write(meta_data_str)
 f.close()
 
 corpus_str = '\n'.join(sentences)
-
+print(len(sentences))
 f = open('data/corpus/' + dataset_name + '.txt', 'w')
 f.write(corpus_str)
 f.close()
