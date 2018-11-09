@@ -11,9 +11,17 @@ import csv
 with open('../kaggle/train.csv', 'r') as f:
   reader = csv.reader(f)
   dataset = list(reader)
-  sentences = [row[1] for row in dataset[1200000:]]
-  labels = [row[2] for row in dataset[1200000:]]
-  train_or_test_list = ['train'] * int((0.8*len(sentences)))+['test'] * (len(sentences)-int(0.8*len(sentences)))
+  sentences = [row[1] for row in dataset[1100000:]]
+  labels = [row[2] for row in dataset[1100000:]]
+  train_or_test_list = ['train'] * len(sentences)
+
+with open('../kaggle/test.csv', 'r') as f:
+	reader = csv.reader(f)
+	dataset = list(reader)
+	sentences1 = [row[1] for row in dataset[1:]]
+	sentences.extend(sentences1)
+	labels.extend(['0' for _ in dataset])
+	train_or_test_list.extend(['test'] * len(sentences1))
 
 meta_data_list = []
 

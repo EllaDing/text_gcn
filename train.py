@@ -90,7 +90,7 @@ def evaluate(features, support, labels, mask, placeholders):
         features, support, labels, mask, placeholders)
     outs_val = sess.run([model.loss, model.accuracy, model.pred, model.labels], feed_dict=feed_dict_val)
     return outs_val[0], outs_val[1], outs_val[2], outs_val[3], (time.time() - t_test)
-
+    
 
 # Init variables
 sess.run(tf.global_variables_initializer())
@@ -139,6 +139,11 @@ for i in range(len(test_mask)):
     if test_mask[i]:
         test_pred.append(pred[i])
         test_labels.append(labels[i])
+
+with open('prediction.csv', "w") as output:
+    writer = csv.writer(output, lineterminator='\n')
+    for val in test_pred:
+        writer.writerows(val)
 
 print("Test Precision, Recall and F1-Score...")
 print(metrics.classification_report(test_labels, test_pred, digits=4))

@@ -42,7 +42,7 @@ for doc_content in doc_content_list:
     doc_words = []
     for word in words:
         # and word in word_vector_map
-        if word not in stop_words and word_freq[word] >= 5: #word not in stop_words and word_freq[word] >= 5
+        if word not in stop_words and word_freq[word] >= 1: #word not in stop_words and word_freq[word] >= 5
             doc_words.append(word)
     doc_str = ' '.join(doc_words).strip()
     #if doc_str == '':
