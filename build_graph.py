@@ -13,7 +13,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from scipy.spatial.distance import cosine
 
 # build corpus
-dataset = 'gxd'
+dataset = 'include_test'
 
 # Read Word Vectors
 # word_vector_file = 'data/glove.6B/glove.6B.300d.txt'
@@ -54,7 +54,6 @@ train_ids = []
 for train_name in doc_train_list:
     train_id = doc_name_list.index(train_name)
     train_ids.append(train_id)
-print(train_ids)
 random.shuffle(train_ids)
 
 # partial labeled data
@@ -69,8 +68,8 @@ test_ids = []
 for test_name in doc_test_list:
     test_id = doc_name_list.index(test_name)
     test_ids.append(test_id)
-print(test_ids)
-random.shuffle(test_ids)
+#print(test_ids)
+#random.shuffle(test_ids)
 
 test_ids_str = '\n'.join(str(index) for index in test_ids)
 f = open('data/' + dataset + '.test.index', 'w')
@@ -78,8 +77,8 @@ f.write(test_ids_str)
 f.close()
 
 ids = train_ids + test_ids
-print(ids)
-print(len(ids))
+#print(ids)
+#print(len(ids))
 
 shuffle_doc_name_list = []
 shuffle_doc_words_list = []
@@ -370,7 +369,7 @@ Doc word heterogeneous graph
 '''
 
 # word co-occurence with context windows
-window_size = 20
+window_size = 15
 windows = []
 
 for doc_words in shuffle_doc_words_list:

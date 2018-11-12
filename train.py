@@ -5,7 +5,9 @@ import time
 import tensorflow as tf
 
 from sklearn import metrics
+from sklearn.utils import class_weight
 from utils import *
+import csv
 from models import GCN, MLP
 import random
 import os
@@ -18,7 +20,7 @@ tf.set_random_seed(seed)
 # Settings
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
-dataset = 'gxd'
+dataset = 'include_test'
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -39,13 +41,11 @@ flags.DEFINE_integer('max_degree', 3, 'Maximum Chebyshev polynomial degree.')
 # Load data
 adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask, train_size, test_size = load_corpus(
     FLAGS.dataset)
-print(adj)
+
 # print(adj[0], adj[1])
 features = sp.identity(features.shape[0])  # featureless
 
-print(adj.shape)
-print(features.shape)
-
+print(sum(y_train[:,0]), sum(y_train[:,1]), sum(y_train.shape))
 # Some preprocessing
 features = preprocess_features(features)
 if FLAGS.model == 'gcn':
@@ -75,7 +75,6 @@ placeholders = {
 }
 
 # Create model
-print(features[2][1])
 model = model_func(placeholders, input_dim=features[2][1], logging=True)
 
 # Initialize session
@@ -91,7 +90,6 @@ def evaluate(features, support, labels, mask, placeholders):
     outs_val = sess.run([model.loss, model.accuracy, model.pred, model.labels], feed_dict=feed_dict_val)
     return outs_val[0], outs_val[1], outs_val[2], outs_val[3], (time.time() - t_test)
     
-
 # Init variables
 sess.run(tf.global_variables_initializer())
 
@@ -140,10 +138,6 @@ for i in range(len(test_mask)):
         test_pred.append(pred[i])
         test_labels.append(labels[i])
 
-with open('prediction.csv', "w") as output:
-    writer = csv.writer(output, lineterminator='\n')
-    for val in test_pred:
-        writer.writerows(val)
 
 print("Test Precision, Recall and F1-Score...")
 print(metrics.classification_report(test_labels, test_pred, digits=4))
@@ -151,6 +145,12 @@ print("Macro average Test Precision, Recall and F1-Score...")
 print(metrics.precision_recall_fscore_support(test_labels, test_pred, average='macro'))
 print("Micro average Test Precision, Recall and F1-Score...")
 print(metrics.precision_recall_fscore_support(test_labels, test_pred, average='micro'))
+
+with open('prediction.csv', "w") as output:
+    writer = csv.writer(output, lineterminator='\n')
+    for val in test_pred:
+        writer.writerow(str(val))
+print(sum(test_pred), len(test_pred))
 
 # doc and word embeddings
 print('embeddings:')
