@@ -369,7 +369,7 @@ Doc word heterogeneous graph
 '''
 
 # word co-occurence with context windows
-window_size = 15
+window_size = 20
 windows = []
 
 for doc_words in shuffle_doc_words_list:
