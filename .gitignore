@@ -2,3 +2,4 @@ prediction.csv
 *.txt
 data/
 __pychache__/
+.DS_Store
