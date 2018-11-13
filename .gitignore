@@ -1,3 +1,4 @@
-data/*
+*.txt
+data/
+__pychache__/
 .DS_Store
-__pycache__
