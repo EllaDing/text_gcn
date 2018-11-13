@@ -87,8 +87,8 @@ def evaluate(features, support, labels, mask, placeholders):
     t_test = time.time()
     feed_dict_val = construct_feed_dict(
         features, support, labels, mask, placeholders)
-    outs_val = sess.run([model.loss, model.accuracy, model.pred, model.labels], feed_dict=feed_dict_val)
-    return outs_val[0], outs_val[1], outs_val[2], outs_val[3], (time.time() - t_test)
+    outs_val = sess.run([model.loss, model.accuracy, model.precision, model.recall, model.f1_score,  model.pred, model.labels], feed_dict=feed_dict_val)
+    return outs_val[0], outs_val[1], outs_val[2], outs_val[3], outs_val[4], outs_val[5], outs_val[6], (time.time() - t_test)
     
 # Init variables
 sess.run(tf.global_variables_initializer())
@@ -109,14 +109,15 @@ for epoch in range(FLAGS.epochs):
                      model.layers[0].embedding], feed_dict=feed_dict)
 
     # Validation
-    cost, acc, pred, labels, duration = evaluate(
+    cost, acc, precision, recall, f1_score, pred, labels, duration = evaluate(
         features, support, y_val, val_mask, placeholders)
     cost_val.append(cost)
 
     print("Epoch:", '%04d' % (epoch + 1), "train_loss=", "{:.5f}".format(outs[1]),
           "train_acc=", "{:.5f}".format(
               outs[2]), "val_loss=", "{:.5f}".format(cost),
-          "val_acc=", "{:.5f}".format(acc), "time=", "{:.5f}".format(time.time() - t))
+          "val_acc=", "{:.5f}".format(acc), "precision= {:.5f}".format(precision), "recall={:.5f}".format(recall), 
+          "f1_score={:.5f}".format(f1_score), "time=", "{:.5f}".format(time.time() - t))
 
     if epoch > FLAGS.early_stopping and cost_val[-1] > np.mean(cost_val[-(FLAGS.early_stopping+1):-1]):
         print("Early stopping...")
@@ -125,10 +126,12 @@ for epoch in range(FLAGS.epochs):
 print("Optimization Finished!")
 
 # Testing
-test_cost, test_acc, pred, labels, test_duration = evaluate(
+test_cost, test_acc, precision, recall, f1_score, pred, labels, test_duration = evaluate(
     features, support, y_test, test_mask, placeholders)
+
 print("Test set results:", "cost=", "{:.5f}".format(test_cost),
-      "accuracy=", "{:.5f}".format(test_acc), "time=", "{:.5f}".format(test_duration))
+      "accuracy=", "{:.5f}".format(test_acc), "precision=", "{:.5f}".format(precision), "recall=", "{:.5f}".format(recall),
+      "f1_score={:.5f}".format(f1_score), "time=", "{:.5f}".format(test_duration))
 
 test_pred = []
 test_labels = []

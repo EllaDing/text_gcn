@@ -154,7 +154,7 @@ class GCN(Model):
                                                   self.placeholders['labels_mask'])
 
     def _accuracy(self):
-        self.accuracy = masked_accuracy(self.outputs, self.placeholders['labels'],
+        self.accuracy, self.precision, self.recall, self.f1_score  = masked_accuracy(self.outputs, self.placeholders['labels'],
                                         self.placeholders['labels_mask'])
         self.pred = tf.argmax(self.outputs, 1)
         self.labels = tf.argmax(self.placeholders['labels'], 1)
