@@ -21,7 +21,7 @@ tf.set_random_seed(seed)
 # Settings
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
-dataset = 'include_test'
+dataset = 'gxd'
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -143,6 +143,11 @@ with open('../kaggle/test.csv', 'r') as f:
     reader = csv.reader(f)
     dataset = list(reader)
     qids = [row[0] for row in dataset[1:]]
+
+with open('prediction.csv', "w") as f:
+    f.write("qid,prediction\n")
+    for i in range(len(test_pred)):
+        f.write(qids[i] + "," + str(test_pred[i]) + "\n")
 
 with open("prediction.txt", "w") as f:
     f.write(str(test_pred))

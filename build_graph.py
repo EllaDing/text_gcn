@@ -13,7 +13,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from scipy.spatial.distance import cosine
 
 # build corpus
-dataset = 'include_test'
+dataset = 'gxd'
 
 # Read Word Vectors
 # word_vector_file = 'data/glove.6B/glove.6B.300d.txt'
