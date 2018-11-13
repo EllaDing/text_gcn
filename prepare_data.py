@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #-*-coding:utf-8-*-
 
-dataset_name = 'own'
+dataset_name = 'include_test'
 # sentences = ['Would you like a plain sweater or something else?​', 'Great. We have some very nice wool slacks over here. Would you like to take a look?']
 # labels = ['Yes' , 'No' ]
 # train_or_test_list = ['train', 'test']
@@ -11,18 +11,21 @@ import csv
 with open('../kaggle/train.csv', 'r') as f:
   reader = csv.reader(f)
   dataset = list(reader)
-  sentences = [row[1] for row in dataset[1100000:]]
-  labels = [row[2] for row in dataset[1100000:]]
+  sentences = [row[1] for row in dataset[1080000:]]
+  labels = [row[2] for row in dataset[1080000:]]
   train_or_test_list = ['train'] * len(sentences)
 
+print(len(sentences), len(labels))
 with open('../kaggle/test.csv', 'r') as f:
 	reader = csv.reader(f)
 	dataset = list(reader)
 	sentences1 = [row[1] for row in dataset[1:]]
+	# labels.extend([row[2] for row in dataset[1:50001]])
 	sentences.extend(sentences1)
 	labels.extend(['0' for _ in dataset[1:]])
 	train_or_test_list.extend(['test'] * len(sentences1))
 
+print(len(sentences), len(train_or_test_list), len(labels))
 meta_data_list = []
 
 for i in range(len(sentences)):

@@ -14,7 +14,7 @@ print(stop_words)
 # vocab, embd, word_vector_map = loadWord2Vec(word_vector_file)
 # word_embeddings_dim = len(embd[0])
 
-dataset = 'gxd'
+dataset = 'include_test'
 
 doc_content_list = []
 f = open('data/corpus/' + dataset + '.txt', 'rb')
@@ -56,7 +56,6 @@ f = open('data/corpus/' + dataset + '.clean.txt', 'w')
 f.write(clean_corpus_str)
 f.close()
 
-dataset = 'own'
 min_len = 10000
 aver_len = 0
 max_len = 0 
