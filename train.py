@@ -9,6 +9,7 @@ from utils import *
 from models import GCN, MLP
 import random
 import os
+import csv
 
 # Set random seed
 seed = random.randint(1, 200)
@@ -140,10 +141,18 @@ for i in range(len(test_mask)):
         test_pred.append(pred[i])
         test_labels.append(labels[i])
 
-with open('prediction.csv', "w") as output:
-    writer = csv.writer(output, lineterminator='\n')
-    for val in test_pred:
-        writer.writerows(val)
+with open('../kaggle/test.csv', 'r') as f:
+    reader = csv.reader(f)
+    dataset = list(reader)
+    qids = [row[0] for row in dataset[1:]]
+
+with open('prediction.csv', "w") as f:
+    f.write("qid,prediction\n")
+    for i in range(len(test_pred)):
+        f.write(qids[i] + "," + str(test_pred[i]) + "\n")
+
+with open("prediction.txt", "w") as f:
+    f.write(str(test_pred))
 
 print("Test Precision, Recall and F1-Score...")
 print(metrics.classification_report(test_labels, test_pred, digits=4))
