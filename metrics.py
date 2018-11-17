@@ -4,7 +4,7 @@ import keras
 def masked_softmax_cross_entropy(preds, labels, mask):
     """Softmax cross-entropy loss with masking."""
     print(preds)
-    class_weights = tf.constant([[1, 15.03964]])
+    class_weights = tf.constant([[1, 1.0]])
     weights = tf.reduce_sum(class_weights * labels, axis=1)
     loss = tf.nn.softmax_cross_entropy_with_logits(logits=preds, labels=labels)
     #loss = keras.losses.binary_crossentropy(labels, preds) 

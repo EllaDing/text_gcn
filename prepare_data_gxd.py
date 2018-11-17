@@ -23,20 +23,36 @@ def count(lst, item):
       n += 1
   return n
 
+
+val_proportion = 0.02
+
 with open('../kaggle/train.csv', 'r') as f:
   reader = csv.reader(f)
   dataset = list(reader)
   rows_separated_by_labels = separate_dataset_by_label(dataset[1:])
-  n = min(len(rows_separated_by_labels[0]), len(rows_separated_by_labels[1]))
-  print(n)
-  rows = random.sample(rows_separated_by_labels[0], n) + random.sample(rows_separated_by_labels[1], n)
-  random.shuffle(rows)
+  n0 = len(rows_separated_by_labels[0])
+  n1 = len(rows_separated_by_labels[1])
+  random.shuffle(rows_separated_by_labels[0])
+  random.shuffle(rows_separated_by_labels[1])
+  n0_val = int(n0 * val_proportion)
+  n1_val = int(n1 * val_proportion)
+  print("n0_val = {}\nn1_val = {}".format(n0_val, n1_val))
+  rows_val = rows_separated_by_labels[0][:n0_val] + rows_separated_by_labels[1][:n1_val]
+
+  n_train = min(n0 - n0_val, n1 - n1_val)
+  print("n_train = {}".format(n_train))
+  rows_train = random.sample(rows_separated_by_labels[0][n0_val:], n_train) + random.sample(rows_separated_by_labels[1][n1_val:], n_train)
+
+  rows = rows_train + rows_val
   sentences = [row[1] for row in rows]
   labels = [row[2] for row in rows]
+  print("---------")
   print(count(labels, '1'))
   print(count(labels, '0'))
-  train_or_test_list = ['train'] * len(sentences)
+  print("---------")
+  train_or_test_list = ['train'] * len(rows_train) + ['test'] * len(rows_val)
 
+"""
 with open('../kaggle/test.csv', 'r') as f:
 	reader = csv.reader(f)
 	dataset = list(reader)
@@ -45,6 +61,7 @@ with open('../kaggle/test.csv', 'r') as f:
 	labels.extend(['0' for _ in dataset[1:]])
 	train_or_test_list.extend(['test'] * len(sentences1))
 
+"""
 meta_data_list = []
 
 for i in range(len(sentences)):
