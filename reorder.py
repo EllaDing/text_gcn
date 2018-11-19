@@ -24,12 +24,3 @@ print(a, b)
 
 with open("submission.txt", "w") as f:
     f.write(str(reordered_pred))
-
-with open('../kaggle/prediction1.csv', 'r') as f:
-    reader = csv.reader(f)
-    dataset = list(reader)
-    pred = [int(row[1]) for row in dataset[1:]]
-    print(len(pred))
-
-with open('../kaggle/prediction1.txt', 'w') as f:
-    f.write(str(pred))
