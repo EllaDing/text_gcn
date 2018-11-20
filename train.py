@@ -21,7 +21,7 @@ tf.set_random_seed(seed)
 # Settings
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
-dataset = 'gxd'
+dataset = 'test'
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -142,15 +142,15 @@ for i in range(len(test_mask)):
         test_pred.append(pred[i])
         test_labels.append(labels[i])
 
-with open('../kaggle/test.csv', 'r') as f:
-    reader = csv.reader(f)
-    dataset = list(reader)
-    qids = [row[0] for row in dataset[1:]]
+#with open('../kaggle/test.csv', 'r') as f:
+#    reader = csv.reader(f)
+#    data = list(reader)
+#    qids = [row[0] for row in data[1:]]
 
-with open('prediction.csv', "w") as f:
-    f.write("qid,prediction\n")
-    for i in range(len(test_pred)):
-        f.write(qids[i] + "," + str(test_pred[i]) + "\n")
+#with open('prediction.csv', "w") as f:
+#    f.write("qid,prediction\n")
+#    for i in range(len(test_pred)):
+#        f.write(qids[i] + "," + str(test_pred[i]) + "\n")
 
 with open("prediction.txt", "w") as f:
     f.write(str(test_pred))
@@ -162,10 +162,10 @@ print(metrics.precision_recall_fscore_support(test_labels, test_pred, average='m
 print("Micro average Test Precision, Recall and F1-Score...")
 print(metrics.precision_recall_fscore_support(test_labels, test_pred, average='micro'))
 
-with open('prediction.csv', "w") as output:
-    writer = csv.writer(output, lineterminator='\n')
-    for val in test_pred:
-        writer.writerow(str(val))
+# with open('prediction.csv', "w") as output:
+#     writer = csv.writer(output, lineterminator='\n')
+#     for val in test_pred:
+#         writer.writerow(str(val))
 print(sum(test_pred), len(test_pred))
 
 # doc and word embeddings
@@ -178,7 +178,7 @@ print(len(word_embeddings), len(train_doc_embeddings),
       len(test_doc_embeddings))
 print(word_embeddings)
 
-f = open('data/corpus/' + dataset + '_vocab.txt', 'r')
+f = open('data/corpus/' + str(dataset) + '_vocab.txt', 'r')
 words = f.readlines()
 f.close()
 

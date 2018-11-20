@@ -1,7 +1,7 @@
 from utils import parse_index_file
 import csv
 
-dataset = 'gxd'
+dataset = 'test'
 
 test_index = parse_index_file("data/{}.test.index".format(dataset))
 

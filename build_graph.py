@@ -13,7 +13,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from scipy.spatial.distance import cosine
 
 # build corpus
-dataset = 'gxd'
+dataset = 'test'
 
 # Read Word Vectors
 # word_vector_file = 'data/glove.6B/glove.6B.300d.txt'
@@ -69,7 +69,7 @@ for test_name in doc_test_list:
     test_id = doc_name_list.index(test_name)
     test_ids.append(test_id)
 #print(test_ids)
-#random.shuffle(test_ids)
+random.shuffle(test_ids)
 
 test_ids_str = '\n'.join(str(index) for index in test_ids)
 f = open('data/' + dataset + '.test.index', 'w')
@@ -145,7 +145,7 @@ f.close()
 '''
 Word definitions begin
 '''
-'''
+
 definitions = []
 
 for word in vocab:
@@ -193,7 +193,7 @@ f.close()
 word_vector_file = 'data/corpus/' + dataset + '_word_vectors.txt'
 _, embd, word_vector_map = loadWord2Vec(word_vector_file)
 word_embeddings_dim = len(embd[0])
-'''
+
 
 '''
 Word definitions end
