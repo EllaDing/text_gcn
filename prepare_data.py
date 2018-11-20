@@ -1,32 +1,47 @@
 #!/usr/bin/python
 #-*-coding:utf-8-*-
 import random
-
-dataset_name = 'include_test'
+import re
+dataset_name = 'test'
 # sentences = ['Would you like a plain sweater or something else?​', 'Great. We have some very nice wool slacks over here. Would you like to take a look?']
 # labels = ['Yes' , 'No' ]
 # train_or_test_list = ['train', 'test']
 
 import csv
 
+sentences = []
+labels = []
+
 with open('../kaggle/train.csv', 'r') as f:
   reader = csv.reader(f)
   dataset = list(reader)
   random.shuffle(dataset)
-  sentences = [row[1] for row in dataset[1080000:]]
-  labels = [row[2] for row in dataset[1080000:]]
-  train_or_test_list = ['train'] * len(sentences)
+  for row in dataset[1100000:]:
+    question = row[1].lower()
+    question = re.sub(r"[?|.|!]", r" ", question)
+    question = re.sub("[\\n|\']", "", question)
+    if len(question.split()) < 3:
+      continue
+    sentences.append(question)
+    labels.append(row[2])
 
-print(len(sentences), len(labels))
+train_or_test_list = ['train'] * len(sentences)
+
+# print(len(sentences), len(labels))
 with open('../kaggle/test.csv', 'r') as f:
-	reader = csv.reader(f)
-	dataset = list(reader)
-	sentences1 = [row[1] for row in dataset[1:]]
-	# labels.extend([row[2] for row in dataset[1:50001]])
-	sentences.extend(sentences1)
-	labels.extend(['0' for _ in dataset[1:]])
-	train_or_test_list.extend(['test'] * len(sentences1))
-
+  reader = csv.reader(f)
+  dataset = list(reader)
+  for row in dataset[1:]:
+    question = row[1].lower()
+    question = re.sub(r"[?|.|!]", r" ", question)
+    question = re.sub("[\\n|\']", "", question)
+    if len(question.split()) < 3:
+      print(question)
+    sentences.append(question)
+    labels.append('0')
+    train_or_test_list.append('test')
+    
+  # labels.extend([row[2] for row in dataset[1:50001]])
 print(len(sentences), len(train_or_test_list), len(labels))
 meta_data_list = []
 

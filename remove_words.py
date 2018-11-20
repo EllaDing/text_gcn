@@ -14,7 +14,7 @@ print(stop_words)
 # vocab, embd, word_vector_map = loadWord2Vec(word_vector_file)
 # word_embeddings_dim = len(embd[0])
 
-dataset = 'gxd'
+dataset = 'test'
 
 doc_content_list = []
 f = open('data/corpus/' + dataset + '.txt', 'rb')
@@ -36,6 +36,8 @@ for doc_content in doc_content_list:
             word_freq[word] = 1
 
 clean_docs = []
+i = 0
+
 for doc_content in doc_content_list:
     temp = clean_str(doc_content)
     words = temp.split()
@@ -45,12 +47,18 @@ for doc_content in doc_content_list:
         if word not in stop_words and word_freq[word] >= 5: #word not in stop_words and word_freq[word] >= 5
             doc_words.append(word)
     doc_str = ' '.join(doc_words).strip()
-    #if doc_str == '':
-        #doc_str = temp
-    clean_docs.append(doc_str)
-
+    if len(doc_str) == 0 and i < 10:
+        i += 1
+        print(doc_content, temp, words)
+    if len(doc_str) == 0:
+        clean_docs.append(temp)
+    else:
+        clean_docs.append(doc_str)
+    if len(doc_str) == 0 and i < 10:
+        i += 1
+        print(clean_docs[-3:])
 clean_corpus_str = '\n'.join(clean_docs)
-
+print('total lines:', len(clean_docs))
 f = open('data/corpus/' + dataset + '.clean.txt', 'w')
 #f = open('data/wiki_long_abstracts_en_text.clean.txt', 'w')
 f.write(clean_corpus_str)
@@ -62,10 +70,14 @@ max_len = 0
 
 f = open('data/corpus/' + dataset + '.clean.txt', 'r')
 #f = open('data/wiki_long_abstracts_en_text.txt', 'r')
+k = 0
 lines = f.readlines()
 for line in lines:
     line = line.strip()
     temp = line.split()
+    if len(temp) <= 1:
+        print(temp, clean_docs[k], doc_content_list[k])
+    k += 1
     aver_len = aver_len + len(temp)
     if len(temp) < min_len:
         min_len = len(temp)
@@ -76,3 +88,4 @@ aver_len = 1.0 * aver_len / len(lines)
 print('min_len : ' + str(min_len))
 print('max_len : ' + str(max_len))
 print('average_len : ' + str(aver_len))
+print('total line:', len(lines))
