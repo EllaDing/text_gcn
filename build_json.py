@@ -6,7 +6,7 @@ import numpy as np
 from networkx.readwrite import json_graph
 
 
-dataset = 'gxd'
+dataset = 'R8'
 train_proportion = 0.8
 
 
@@ -53,7 +53,7 @@ def build_graph(allx, tx, ally, ty, adj):
     assert full_y.shape[0] == n
     label = {}
     for i in range(n):
-        label[str(i)] = list(full_y[i])
+        label[str(i)] = full_y[i].tolist()
 
     # Build ID map
     id_map = {}
@@ -65,30 +65,22 @@ def build_graph(allx, tx, ally, ty, adj):
 
     return G, label, feats, id_map
 
-    G_json = json_graph.node_link_data(G)
-    G_json_str = json.dumps(G_json)
-
 
 def save_graph(G, label, feats, id_map):
     print("Saving graph...")
 
-    try:
-        os.mkdir(dataset)
-    except:
-        pass
-
-    with open(dataset + "/" + dataset + "-G.json", "w") as f:
+    with open("data/" + dataset + "-G.json", "w") as f:
         G_json = json_graph.node_link_data(G)
-        G_json_str = str(G_json)
+        G_json_str = json.dumps(G_json)
         f.write(G_json_str)
 
-    with open(dataset + "/" + dataset + "-class_map.json", "w") as f:
-        f.write(str(label))
+    with open("data/" + dataset + "-class_map.json", "w") as f:
+        json.dump(label, f)
 
-    np.save(dataset + "/" + dataset + "-feats.npy", feats)
+    np.save("data/" + dataset + "-feats.npy", feats)
 
-    with open(dataset + "/" + dataset + "-id_map.json", "w") as f:
-        f.write(str(id_map))
+    with open("data/" + dataset + "-id_map.json", "w") as f:
+        json.dump(id_map, f)
 
 
 if __name__ == '__main__':
