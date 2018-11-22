@@ -32,21 +32,7 @@ def load_data(dataset_str):
 def build_graph(allx, tx, ally, ty, adj):
     print("Building graph...")
 
-    G = nx.Graph()
     n = adj.shape[0]
-
-    # Build graph
-    n_train = int(allx.shape[0] * train_proportion)
-    for i in range(n_train):
-        G.add_node(i, val=False, test=False)
-    for i in range(n_train, allx.shape[0]):
-        G.add_node(i, val=True, test=False)
-    for i in range(allx.shape[0], n):
-        G.add_node(i, val=False, test=True)
-    # TODO: add edge weight
-    for i in range(n):
-        for j in adj[i].indices:
-            G.add_edge(i, j)
 
     # Build label
     full_y = np.concatenate((ally, ty))
@@ -62,6 +48,20 @@ def build_graph(allx, tx, ally, ty, adj):
 
     # Build feature
     feats = np.concatenate((allx.todense(), tx.todense()))
+
+    # Build graph
+    G = nx.Graph()
+    n_train = int(allx.shape[0] * train_proportion)
+    for i in range(n_train):
+        G.add_node(i, val=False, test=False, feature=list(feats[i]), label=label[str(i)])
+    for i in range(n_train, allx.shape[0]):
+        G.add_node(i, val=True, test=False, feature=list(feats[i]), label=label[str(i)])
+    for i in range(allx.shape[0], n):
+        G.add_node(i, val=False, test=True, feature=list(feats[i]), label=label[str(i)])
+    # TODO: add edge weight
+    for i in range(n):
+        for j in adj[i].indices:
+            G.add_edge(i, j)
 
     return G, label, feats, id_map
 
