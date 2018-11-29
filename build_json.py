@@ -48,16 +48,16 @@ def build_graph(allx, tx, ally, ty, adj):
 
     # Build feature
     feats = np.concatenate((allx.todense(), tx.todense()))
-
+ 
     # Build graph
     G = nx.Graph()
     n_train = int(allx.shape[0] * train_proportion)
     for i in range(n_train):
-        G.add_node(i, val=False, test=False, feature=list(feats[i]), label=label[str(i)])
+        G.add_node(i, val=False, test=False, feature=feats[i].tolist(), label=label[str(i)])
     for i in range(n_train, allx.shape[0]):
-        G.add_node(i, val=True, test=False, feature=list(feats[i]), label=label[str(i)])
+        G.add_node(i, val=True, test=False, feature=feats[i].tolist(), label=label[str(i)])
     for i in range(allx.shape[0], n):
-        G.add_node(i, val=False, test=True, feature=list(feats[i]), label=label[str(i)])
+        G.add_node(i, val=False, test=True, feature=feats[i].tolist(), label=label[str(i)])
     # TODO: add edge weight
     for i in range(n):
         for j in adj[i].indices:
@@ -69,10 +69,9 @@ def build_graph(allx, tx, ally, ty, adj):
 def save_graph(G, label, feats, id_map):
     print("Saving graph...")
 
+    G_json = json_graph.node_link_data(G)
     with open("data/" + dataset + "-G.json", "w") as f:
-        G_json = json_graph.node_link_data(G)
-        G_json_str = json.dumps(G_json)
-        f.write(G_json_str)
+        json.dump(G_json, f)
 
     with open("data/" + dataset + "-class_map.json", "w") as f:
         json.dump(label, f)
