@@ -16,7 +16,7 @@ with open('../kaggle/train.csv', 'r') as f:
   reader = csv.reader(f)
   dataset = list(reader)
   random.shuffle(dataset)
-  for row in dataset[1100000:]:
+  for row in dataset[1070000:]:
     question = row[1].lower()
     question = re.sub(r"[?|.|!]", r" ", question)
     question = re.sub("[\\n|\']", "", question)
