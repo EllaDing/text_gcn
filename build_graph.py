@@ -304,8 +304,8 @@ print(ty)
 # (a superset of x)
 # unlabeled training instances -> words
 
-# word_vectors = np.random.uniform(-0.01, 0.01,
-#                                  (vocab_size, word_embeddings_dim))
+ word_vectors = np.random.uniform(-0.01, 0.01,
+                                  (vocab_size, word_embeddings_dim))
 
 for i in range(len(vocab)):
     word = vocab[i]
