@@ -39,7 +39,7 @@ def build_graph(allx, tx, ally, ty, adj):
     assert full_y.shape[0] == n
     label = {}
     n_document = 0
-    last_document = 0
+    last_train_document = 0
     val_begin = 0
     val_end = 0
     for i in range(n):
@@ -47,11 +47,12 @@ def build_graph(allx, tx, ally, ty, adj):
         if sum(full_y[i].tolist()) > 0:
             n_document += 1
             last_document = i
-            if i > 0 and sum(full_y[i - 1].tolist()) == 0:
-                val_begin = i
-            val_end = i
+            if val_end == 0 and sum(full_y[i + 1].tolist()) == 0:
+                val_end = i
+    val_begin = int(val_end * train_proportion)
 
     print("document: {} {}".format(n_document, last_document))
+    print(val_begin, val_end)
 
     # Build ID map
     id_map = {}
@@ -64,6 +65,7 @@ def build_graph(allx, tx, ally, ty, adj):
     # Build graph
     G = nx.Graph()
     n_train = int(allx.shape[0] * train_proportion)
+    print(allx.shape)
     #for i in range(n_train):
         #G.add_node(i, val=False, test=False)
         #print(label[str(i)])
