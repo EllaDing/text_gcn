@@ -44,14 +44,16 @@ for doc_content in doc_content_list:
     doc_words = []
     for word in words:
         # and word in word_vector_map
-        if word not in stop_words and word_freq[word] >= 5: #word not in stop_words and word_freq[word] >= 5
+        if word not in stop_words and word_freq[word] >= 4: #word not in stop_words and word_freq[word] >= 5
             doc_words.append(word)
     doc_str = ' '.join(doc_words).strip()
     if len(doc_str) == 0 and i < 10:
         i += 1
         print(doc_content, temp, words)
     if len(doc_str) == 0:
-        clean_docs.append(temp)
+        if len(temp) == 0:
+            clean_docs.append(doc_content)
+        else: clean_docs.append(temp)
     else:
         clean_docs.append(doc_str)
     if len(doc_str) == 0 and i < 10:
@@ -75,7 +77,7 @@ lines = f.readlines()
 for line in lines:
     line = line.strip()
     temp = line.split()
-    if len(temp) <= 1:
+    if len(temp) == 0:
         print(temp, clean_docs[k], doc_content_list[k])
     k += 1
     aver_len = aver_len + len(temp)

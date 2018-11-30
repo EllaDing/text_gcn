@@ -145,7 +145,7 @@ f.close()
 '''
 Word definitions begin
 '''
-
+'''
 definitions = []
 
 for word in vocab:
@@ -194,7 +194,7 @@ word_vector_file = 'data/corpus/' + dataset + '_word_vectors.txt'
 _, embd, word_vector_map = loadWord2Vec(word_vector_file)
 word_embeddings_dim = len(embd[0])
 
-
+'''
 '''
 Word definitions end
 '''
