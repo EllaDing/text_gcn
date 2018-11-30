@@ -304,8 +304,8 @@ print(ty)
 # (a superset of x)
 # unlabeled training instances -> words
 
-word_vectors = np.random.uniform(-0.01, 0.01,
-                                 (vocab_size, word_embeddings_dim))
+ word_vectors = np.random.uniform(-0.01, 0.01,
+                                  (vocab_size, word_embeddings_dim))
 
 for i in range(len(vocab)):
     word = vocab[i]
@@ -369,7 +369,7 @@ Doc word heterogeneous graph
 '''
 
 # word co-occurence with context windows
-window_size = 20
+window_size = 16
 windows = []
 
 for doc_words in shuffle_doc_words_list:
