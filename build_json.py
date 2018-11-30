@@ -38,8 +38,20 @@ def build_graph(allx, tx, ally, ty, adj):
     full_y = np.concatenate((ally, ty))
     assert full_y.shape[0] == n
     label = {}
+    n_document = 0
+    last_document = 0
+    val_begin = 0
+    val_end = 0
     for i in range(n):
         label[str(i)] = full_y[i].tolist()
+        if sum(full_y[i].tolist()) > 0:
+            n_document += 1
+            last_document = i
+            if i > 0 and sum(full_y[i - 1].tolist()) == 0:
+                val_begin = i
+            val_end = i
+
+    print("document: {} {}".format(n_document, last_document))
 
     # Build ID map
     id_map = {}
@@ -52,12 +64,14 @@ def build_graph(allx, tx, ally, ty, adj):
     # Build graph
     G = nx.Graph()
     n_train = int(allx.shape[0] * train_proportion)
-    for i in range(n_train):
-        G.add_node(i, val=False, test=False, feature=feats[i].tolist(), label=label[str(i)])
-    for i in range(n_train, allx.shape[0]):
-        G.add_node(i, val=True, test=False, feature=feats[i].tolist(), label=label[str(i)])
+    #for i in range(n_train):
+        #G.add_node(i, val=False, test=False)
+        #print(label[str(i)])
+    for i in range(allx.shape[0]):
+        G.add_node(i, val=(i >= val_begin and i <= val_end), test=False)
+        #print(label[str(i)])
     for i in range(allx.shape[0], n):
-        G.add_node(i, val=False, test=True, feature=feats[i].tolist(), label=label[str(i)])
+        G.add_node(i, val=False, test=True)
     # TODO: add edge weight
     for i in range(n):
         for j in adj[i].indices:
