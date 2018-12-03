@@ -65,7 +65,7 @@ with open('../kaggle/train.csv', 'r') as f:
   reader = csv.reader(f)
   dataset = list(reader)
   random.shuffle(dataset)
-  for row in dataset[1070000:]:
+  for row in dataset[900000:]:
     question = replace_typical_misspell(clean_text(row[1].lower()))
     question = re.sub("\\n", "", question)
     if len(question.split()) < 3:

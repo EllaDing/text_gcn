@@ -13,7 +13,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from scipy.spatial.distance import cosine
 
 # build corpus
-dataset = 'R8'
+dataset = 'test'
 
 # Read Word Vectors
 # word_vector_file = 'data/glove.6B/glove.6B.300d.txt'
@@ -304,7 +304,7 @@ print(ty)
 # (a superset of x)
 # unlabeled training instances -> words
 
- word_vectors = np.random.uniform(-0.01, 0.01,
+word_vectors = np.random.uniform(-0.01, 0.01,
                                   (vocab_size, word_embeddings_dim))
 
 for i in range(len(vocab)):
