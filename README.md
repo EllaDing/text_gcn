@@ -1,6 +1,6 @@
 # text_gcn
 
-Graph Convolutional Networks for Text Classification
+Text Graph Convolutional Networks for Quora Insincere Questions Classification.
 
 # Require
 
@@ -10,16 +10,15 @@ Tensorflow >= 1.4.0
 
 # Reproduing Results
 
-1. Run `python remove_words.py`
+1. Run `prepare_data.py`
 
-2. Run `python build_graph.py`
+2. Run `python remove_words.py`
 
-3. Run `python train.py`
+3. Run `python build_graph.py`
 
-# Example input data
+4. Run `python train.py`
 
-1. `/data/20ng.txt` indicates document names, training/test split, document labels. Each line is for a document.
+# Input data
 
-2. `/data/corpus/20ng.txt` contains raw text of each document, each line is for the corresponding line in `/data/20ng.txt`
-
-3. Change `dataset = '20ng'` in `remove_words.py`, `build_graph.py` and `train.py` when producing results for other datasets.
+We use the data provided on Kaggle: https://www.kaggle.com/c/quora-insincere-questions-classification/data.
+The training data includes the question that was asked, and whether it was identified as insincere (target = 1). The ground-truth labels contain some amount of noise: they are not guaranteed to be perfect.
